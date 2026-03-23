@@ -1,0 +1,23 @@
+# TYPE app_running gauge
+app_running{app="risk_calc"} 0
+
+# TYPE app_instances gauge
+app_instances{app="risk_calc"} 0
+
+# TYPE app_expected gauge
+app_expected{app="risk_calc"} 0
+
+# TYPE app_missing gauge
+app_missing{app="risk_calc"} 0
+
+# TYPE app_duplicate gauge
+app_duplicate{app="risk_calc"} 0
+
+# TYPE app_lag_seconds gauge
+app_lag_seconds{app="risk_calc"} 115
+
+# TYPE app_stalled gauge
+app_stalled{app="risk_calc"} 1
+
+# TYPE app_last_seen_timestamp gauge
+app_last_seen_timestamp{app="risk_calc"} 1774043202

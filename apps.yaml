@@ -1,0 +1,14 @@
+apps:
+  - name: pnl_engine
+    host: server1
+    process_name: pnl_engine.py
+    loop_interval_sec: 60
+    start_time: "08:00"
+    end_time: "18:00"
+
+  - name: risk_calc
+    host: server1
+    process_name: risk_calc.py
+    loop_interval_sec: 30
+    start_time: "07:30"
+    end_time: "19:00"
