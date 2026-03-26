@@ -5,7 +5,46 @@ from pathlib import Path
 import psutil
 import yaml
 from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
+def evaluate_status(
+    *,
+    expected: int,
+    running: int,
+    duplicate: int,
+    lag: int | None,
+    delayed: int,
+    stalled: int,
+    heartbeat_ts: int | None,
+) -> tuple[int, str, str]:
 
+    if expected == 0:
+        return STATUS_IDLE, "IDLE", "Not scheduled to run"
+
+    # PROCESS RUNNING
+    if running == 1:
+
+        if duplicate == 1:
+            return STATUS_DUPLICATE, "DUPLICATE", "Multiple instances — check"
+
+        if stalled == 1:
+            return STATUS_STALLED, "STALLED", "Alive but stuck — investigate"
+
+        if delayed == 1:
+            return STATUS_DELAYED, "DELAYED", "Delayed — monitor"
+
+        return STATUS_OK, "OK", "Running normally"
+
+    # PROCESS NOT RUNNING BUT EXPECTED
+
+    # Heartbeat exists → job already ran
+    if heartbeat_ts is not None:
+
+        if stalled == 1:
+            return STATUS_DOWN, "DOWN", "App down — restart required"
+
+        return STATUS_COMPLETED, "COMPLETED", "Job completed"
+
+    # Never started
+    return STATUS_NOT_STARTED, "NOT_STARTED", "Not started yet"
 
 METRICS_DIR = Path("./metrics")
 METRICS_DIR.mkdir(exist_ok=True)
